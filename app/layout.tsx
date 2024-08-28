@@ -17,10 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
         <ClerkProvider>
-          <ThemeProvider attribute="class" forcedTheme="dark" defaultTheme="dark" enableSystem={false} storageKey="nexus-theme">{children}</ThemeProvider>
+          <ThemeProvider attribute="class"  defaultTheme="system" enableSystem storageKey="nexus-theme">{children}</ThemeProvider>
         </ClerkProvider>
       </body>
     </html>
