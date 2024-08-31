@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -25,6 +20,7 @@ model Profile {
   updatedAt DateTime @updatedAt
   servers Server[]
   members Member[]
+  channels Channel[]
 }
 
 model Server{
@@ -32,9 +28,11 @@ model Server{
   Name String
   imageUrl String @db.Text
   inviteCode String @db.Text
+
   profileId String
   profile Profile @relation(fields: [profileId],references: [id], onDelete: Cascade)
   members Member[]
+  channels Channel[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([profileId])
@@ -57,6 +55,22 @@ model Member{
 
   @@index([serverid])
   @@index([profileId])
+}
 
-  
+enum channelType{
+  TEXT 
+  AUDIO 
+  VIDEO
+}
+
+model Channel{
+  id String @id @default(uuid())
+  Name String
+  channelType channelType @default(TEXT)
+  serverid String
+  server Server @relation(fields: [serverid], references: [id])
+  profileId String
+  profile Profile @relation(fields: [profileId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
