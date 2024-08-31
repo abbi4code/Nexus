@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id String @id @default(uuid())
+  //this userid will eventually come from clerkk
+  userId String @unique
+  Name String
+  //this db.txt give us a long string length to play with comparing varchar
+  imageUrl String @db.Text
+  email String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  servers Server[]
+  members Member[]
+}
+
+model Server{
+  id String @id @default(uuid())
+  Name String
+  imageUrl String @db.Text
+  inviteCode String @db.Text
+  profileId String
+  profile Profile @relation(fields: [profileId],references: [id], onDelete: Cascade)
+  members Member[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([profileId])
+}
+enum memberrole{
+  ADMIN
+  GUEST
+  MODERATOR
+}
+
+model Member{
+  id String @id @default(uuid())
+  role memberrole @default(GUEST)
+  serverid String
+  server Server @relation(fields: [serverid], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id])
+
+  @@index([serverid])
+  @@index([profileId])
+
+  
+}
