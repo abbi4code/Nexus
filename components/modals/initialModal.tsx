@@ -68,6 +68,7 @@ const InitialModal = () => {
           </DialogDescription>
         </DialogHeader>
         {/* we pass that above form as a props to this  */}
+        {/* err => err.file */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
