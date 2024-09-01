@@ -11,7 +11,7 @@ export default async function page() {
         where:{
             members:{
                 some:{
-                    //@ts-ignore
+                    // @ts-ignore
                     profileId: profile.id
                 }
             }
